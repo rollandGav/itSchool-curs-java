@@ -1,6 +1,8 @@
 package org.example.session20;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class PizzaOrderSystem {
@@ -49,7 +51,21 @@ public class PizzaOrderSystem {
         boolean hasVeganPizza = orders.stream().anyMatch(o -> !o.getToppings().contains("carne"));
         System.out.println("Has vegan pizza: " + hasVeganPizza);
 
+        orders.stream()
+                .map(PizzaOrder::getName)
+                .map(String::toUpperCase)
+                .forEach(System.out::println);
 
+        Optional<PizzaOrder> optionalPizzaOrder = orders.stream()
+                .filter(o -> o.getPrice() > 45)
+                .findFirst();
+
+        System.out.println(" Optional: " + optionalPizzaOrder);
+
+        Map<String,List<PizzaOrder>> groupByName = orders.stream()
+                .collect(Collectors.groupingBy(PizzaOrder::getName));
+        groupByName.forEach((name,list) -> System.out.println(name + " -> " + list.size() + " comenzi"));
+        System.out.println(groupByName);
     }
 
 }
